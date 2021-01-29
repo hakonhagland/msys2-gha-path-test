@@ -31,5 +31,6 @@ jobs:
       - name: test cpanm
         run: |
           ls -l $PERL_LOCAL_LIB_ROOT/bin/cpanm
+          CPANM=$PERL_LOCAL_LIB_ROOT/bin/cpanm
           export PATH
-          perl -S cpanm -v Path::Tiny
+          $CPANM -v Path::Tiny
