@@ -34,3 +34,4 @@ jobs:
           CPANM=$PERL_LOCAL_LIB_ROOT/bin/cpanm
           export PATH
           $CPANM -v Path::Tiny
+          perl -w -MPath::Tiny -e1
