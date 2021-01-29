@@ -15,7 +15,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: setup perl locallib
         run: |
-          TOPDIR=$(cygpath "$GITHUB_WORKSPACE")
+          #TOPDIR=$(cygpath "$GITHUB_WORKSPACE")
+          TOPDIR=$HOME
           PERL_LOCAL_LIB_ROOT="$TOPDIR/perl5"
           >>"$GITHUB_ENV" echo "PERL_LOCAL_LIB_ROOT=$PERL_LOCAL_LIB_ROOT"
           >>"$GITHUB_ENV" echo "PERL5LIB=$PERL_LOCAL_LIB_ROOT/lib/perl5"
