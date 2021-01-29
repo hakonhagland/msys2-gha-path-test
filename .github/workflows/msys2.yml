@@ -1,0 +1,34 @@
+name: windows-msys2
+on: [push, pull_request]
+jobs:
+  build-dist:
+    runs-on: windows-2019
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MSYS
+          path-type: minimal
+          install: base-devel
+      - uses: actions/checkout@v2
+      - name: setup perl locallib
+        run: |
+          TOPDIR=$(cygpath "$GITHUB_WORKSPACE")
+          PERL_LOCAL_LIB_ROOT="$TOPDIR/perl5"
+          >>"$GITHUB_ENV" echo "PERL_LOCAL_LIB_ROOT=$PERL_LOCAL_LIB_ROOT"
+          >>"$GITHUB_ENV" echo "PERL5LIB=$PERL_LOCAL_LIB_ROOT/lib/perl5"
+          >>"$GITHUB_ENV" echo "PERL_MB_OPT=--install_base \"$PERL_LOCAL_LIB_ROOT/\""
+          >>"$GITHUB_ENV" echo "PERL_MM_OPT=INSTALL_BASE=$PERL_LOCAL_LIB_ROOT"
+          >>"$GITHUB_ENV" echo "PATH=$PERL_LOCAL_LIB_ROOT/bin:$PATH"
+      - name: install cpanm
+        run: |
+          echo "PATH=$PATH"
+          cpan App::cpanminus
+          export PATH
+          ls -l $PERL_LOCAL_LIB_ROOT/bin/cpanm
+      - name: test cpanm
+        run: |
+          ls -l $PERL_LOCAL_LIB_ROOT/bin/cpanm
+          cpanm -v Path::Tiny
